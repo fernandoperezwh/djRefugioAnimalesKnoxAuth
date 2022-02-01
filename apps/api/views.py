@@ -3,6 +3,8 @@ from django.db.models import Q
 from django.http import Http404
 # django rest framework packages
 from rest_framework import status
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken as ObtainAuthTokenDRF
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -11,6 +13,19 @@ from apps.adopcion.models import Persona
 from apps.mascota.models import Vacuna, Mascota
 from apps.adopcion.serializers import PersonaSerializer
 from apps.mascota.serializers import VacunaSerializer, MascotaSerializer, EditMascotaSerializer
+
+
+class ObtainAuthToken(ObtainAuthTokenDRF):
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'access_token': token.key,
+            'token_type': 'Token',
+        })
 
 
 # region Persona views

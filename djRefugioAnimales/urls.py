@@ -16,20 +16,16 @@ Including another URLconf
 # django packages
 from django.conf.urls import include, url
 from django.contrib import admin
-# third party packages
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 # local packages
+from apps.api.views import ObtainAuthToken
 from apps.mascota.views import MascotaListView
 
 urlpatterns = [
     # region django urls
     url(r'^admin/', include(admin.site.urls)),
     # endregion
-
-    # region third party urls
-    url(r'^api/auth/$', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    url(r'^api/auth/refresh/$', TokenRefreshView.as_view(), name='token_refresh'),
-    url(r'^api/auth/verify/$', TokenVerifyView.as_view(), name='token_verify'),
+    # region django rest framework urls
+    url('^token/$', ObtainAuthToken.as_view()),
     # endregion
 
     # region local urls

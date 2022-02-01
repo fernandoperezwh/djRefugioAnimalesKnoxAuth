@@ -41,6 +41,7 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 LOCAL_APPS = [
     'apps.adopcion',
@@ -140,11 +141,6 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     )
-}
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': True
 }

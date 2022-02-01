@@ -1,5 +1,5 @@
-# djRefugioAnimalesSimpleJWTAPI
-Aplicación servidor del proyecto [djRefugioAnimalesSimpleJwtClient](https://github.com/fernandoperezwh/djRefugioAnimalesSimpleJwtClient) implementando autentificacion por Simple-JWT conforme a la documentación paquetes de terceros
+# djRefugioAnimalesTokenAuthAPI
+Aplicación servidor del proyecto [djRefugioAnimalesTokenAuthClient](https://github.com/fernandoperezwh/djRefugioAnimalesTokenAuthClient) implementando autentificacion por TokenAuthentication conforme a la [documentación](https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication)
 
 
 # Instalación
