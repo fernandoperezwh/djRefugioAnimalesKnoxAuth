@@ -1,5 +1,5 @@
-# Django Refugio de animales
-Practica del curso gratuito de Django de codigo facilito
+# djRefugioAnimalesSimpleJWTAPI
+Aplicación servidor del proyecto [djRefugioAnimalesSimpleJwtClient](https://github.com/fernandoperezwh/djRefugioAnimalesSimpleJwtClient) implementando autentificacion por Simple-JWT conforme a la documentación paquetes de terceros
 
 
 # Instalación
