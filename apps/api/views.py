@@ -15,18 +15,6 @@ from apps.adopcion.serializers import PersonaSerializer
 from apps.mascota.serializers import VacunaSerializer, MascotaSerializer, EditMascotaSerializer
 
 
-class ObtainAuthToken(ObtainAuthTokenDRF):
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,
-                                           context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'access_token': token.key,
-            'token_type': 'Token',
-        })
-
 
 # region Persona views
 class PersonaList(APIView):
@@ -194,3 +182,21 @@ class VacunaPrivateDetail(PermissionMixin, VacunaDetail):
 class MascotaPrivateDetail(PermissionMixin, MascotaDetail):
     pass
 # endregion
+
+
+class ObtainAuthToken(ObtainAuthTokenDRF):
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'access_token': token.key,
+            'token_type': 'Token',
+        })
+
+
+class VerifyAuthToken(PermissionMixin, APIView):
+    def get(self):
+        return Response()

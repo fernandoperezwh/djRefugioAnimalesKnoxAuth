@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 # local packages
-from apps.api.views import ObtainAuthToken
+from apps.api.views import ObtainAuthToken, VerifyAuthToken
 from apps.mascota.views import MascotaListView
 
 urlpatterns = [
@@ -26,6 +26,8 @@ urlpatterns = [
     # endregion
     # region django rest framework urls
     url('^token/$', ObtainAuthToken.as_view()),
+    url('^token/verify/$', VerifyAuthToken.as_view()),
+    
     # endregion
 
     # region local urls
