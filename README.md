@@ -1,20 +1,48 @@
 # djRefugioAnimalesTokenAuthAPI
-Aplicación servidor del proyecto [djRefugioAnimalesTokenAuthClient](https://github.com/fernandoperezwh/djRefugioAnimalesTokenAuthClient) implementando autentificacion por TokenAuthentication conforme a la [documentación](https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication)
+Aplicación servidor del proyecto [djRefugioAnimalesTokenAuthClient](https://github.com/fernandoperezwh/djRefugioAnimalesTokenAuthClient), es necesario ejecutar ambos proyectos para su correcto funcionamiento.
+
+En este proyecto se muestra la autentificacion por [TokenAuthentication](https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication)
 
 
 # Instalación
-- Crear un entorno virtual con: ```mkvirtualenv <env_name>```
-- Activar el entorno con:
-    - Opción 1 -  ```workon <env_name>```
-    - Opción 2  - ```source ./<env_path>/bin/activate```
-- Instalar las dependencias con: ```pip install -r requirements.txt```
+- Elegir una directorio de facil acceso para clonar el proyecto. 
+    ```bash
+    cd ~/Escritorio/
+    ```
+- Clonar el proyecto ya sea por ssh o https
+    ```bash
+    # Clone via ssh
+    git clone git@github.com:fernandoperezwh/djRefugioAnimalesTokenAuthAPI.git
+    # Clone via https
+    git clone https://github.com/fernandoperezwh/djRefugioAnimalesTokenAuthAPI.git
+    ```
+- Crear un entorno virtual utilizando python 2.7
+    ```bash
+    mkvirtualenv djRefugioAnimalesTokenAuthAPI -p=2.7
+    ```
+- Activar el entorno creado en el anterior paso
+    ```bash
+    workon djRefugioAnimalesTokenAuthAPI
+    ```
+- Instalar las dependencias del archivo `requirements.txt` 
+    ```bash
+    pip install -r requirements.txt
+    ```
+- Realizar las migraciones del proyecto 
+    ```bash 
+    python manage.py migrate
+    ```
+- Opcionalmente puede crear un nuevo super usuario con el siguiente comando
+    ```bash
+    python manage.py createsuperuser
+    ```    
+    Igualmente puede usar las siguientes credenciales de un superusuario de prueba existente
+    - user: `fernando`
+    - passwd: `fernando123`
 
-# Uso
-- Realizar las migraciones con: ```python manage.py migrate```
-- Crear super user con: ```python manage.py createsuperuser```
-- Ejecutar la aplicación con: ```python manage.py runserver```
+<!-- - Crear super user con: ```python manage.py createsuperuser``` -->
+- Finalmente, ejecute el proyecto
+    ```bash
+    python manage.py runserver
+    ```
 
-# Changelog
- - v0.2.1 Se elimina codigo innecesario en los ModelSerializer de Vacuna y Persona
- - v0.2.0 Integracion de Django REST Framework, se libera la api de djRefugioAnimales
- - v0.1.0 Curso de Capacitación para aprender Django
