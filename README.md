@@ -1,19 +1,15 @@
 # djRefugioAnimalesTokenAuthAPI
-Aplicación servidor del proyecto [djRefugioAnimalesTokenAuthClient](https://github.com/fernandoperezwh/djRefugioAnimalesTokenAuthClient), es necesario ejecutar ambos proyectos para su correcto funcionamiento.
 
-En este proyecto se muestra la autentificacion por [TokenAuthentication](https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication)
-
-
-# Instalación
+## Instalación
 - Elegir una directorio de facil acceso para clonar el proyecto. 
     ```bash
     cd ~/Escritorio/
     ```
 - Clonar el proyecto ya sea por ssh o https
     ```bash
-    # Clone via ssh
     git clone git@github.com:fernandoperezwh/djRefugioAnimalesTokenAuthAPI.git
-    # Clone via https
+    ```
+    ```bash
     git clone https://github.com/fernandoperezwh/djRefugioAnimalesTokenAuthAPI.git
     ```
 - Crear un entorno virtual utilizando python 2.7
@@ -32,17 +28,21 @@ En este proyecto se muestra la autentificacion por [TokenAuthentication](https:/
     ```bash 
     python manage.py migrate
     ```
-- Opcionalmente puede crear un nuevo super usuario con el siguiente comando
+- Cree un nuevo super usuario con el siguiente comando. Sugerimos que recuerde las credenciales de su usuario ya que los usaremos para autentificarnos en el proyecto y consumir los endpoints/recursos.
     ```bash
     python manage.py createsuperuser
     ```    
-    Igualmente puede usar las siguientes credenciales de un superusuario de prueba existente
-    - user: `fernando`
-    - passwd: `fernando123`
-
-<!-- - Crear super user con: ```python manage.py createsuperuser``` -->
 - Finalmente, ejecute el proyecto
     ```bash
     python manage.py runserver
     ```
 
+## Uso
+
+Este proyecto es un fork del proyecto principal djRefugioAnimales. 
+
+En el proyecto existen tres modulos: Personas, Vacunas, Mascotas. El cual, cada uno de ellos tiene implementado un CRUD se consumen a traves de: Vistas basadas en funciones, vistas basadas en clases y API REST con Django REST Framework.
+
+La parte importante de este proyecto consiste en el desarrollo de una API REST. Los endpoints expuestos se encuentran protegidos y, por lo tanto, requieren que se encuentre un usuario autentificado.
+
+Este proyecto permite dos tipos de autentificación: por sesión y por token.

@@ -1,4 +1,5 @@
 # django packages
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -9,6 +10,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 # third party packages
 import requests
 from requests import ConnectionError, ConnectTimeout
+from rest_framework import status
 # local imports
 from apps.adopcion.models import Persona
 from apps.adopcion.forms import PersonaForm
@@ -129,7 +131,7 @@ class PersonaDeleteView(SuccessMessageMixin, DeleteView):
 
 # region persona - API Clase based views
 class PersonaApiListView(ListView):
-    endpoint = 'http://localhost:8000/api/public/persona/'
+    endpoint = '{endpoint}/api/persona/'.format(endpoint=settings.API_ENDPOINT)
     model = Persona
     template_name = "adopcion__persona_listado.html"
     form_class = SearchForm
@@ -157,8 +159,9 @@ class PersonaApiListView(ListView):
     def get_info_via_api(self, search_query=None):
         data = []
         try:
-            response = requests.get(self.get_endpoint(search_query))
-            data = response.json()
+            response = requests.get(self.get_endpoint(search_query), cookies=self.request.COOKIES)
+            if response.status_code == status.HTTP_200_OK:
+                data = response.json()
         except (ConnectionError, ConnectTimeout) as err:
             pass
         return data
@@ -170,7 +173,8 @@ def persona_form_api(request, _id=None):
     # Se verifica la existencia
     if _id:
         try:
-            response = requests.get('http://localhost:8000/api/public/persona/{id}'.format(id=_id))
+            endpoint = '{endpoint}/api/persona/{id}'.format(endpoint=settings.API_ENDPOINT, id=_id)
+            response = requests.get(endpoint, cookies=request.COOKIES)
             if response.status_code != 200:
                 raise Http404
             initial = response.json()
@@ -188,11 +192,12 @@ def persona_form_api(request, _id=None):
             try:
                 if initial:
                     # Se actualiza registro de persona
-                    response = requests.put('http://localhost:8000/api/public/persona/{id}/'.format(id=_id),
-                                            data=form.cleaned_data)
+                    endpoint = '{endpoint}/api/persona/{id}/'.format(endpoint=settings.API_ENDPOINT, id=_id)
+                    response = requests.put(endpoint, data=form.cleaned_data, cookies=request.COOKIES)
                 else:
                     # Se crea registro de persona
-                    response = requests.post('http://localhost:8000/api/public/persona/', data=form.cleaned_data)
+                    endpoint = '{endpoint}/api/persona/'.format(endpoint=settings.API_ENDPOINT)
+                    response = requests.post(endpoint, data=form.cleaned_data, cookies=request.COOKIES)
 
             except (ConnectionError, ConnectTimeout) as err:
                 messages.error(request, 'Un error desconocido ha ocurrido intentando aplicar la accion sobre la '
@@ -222,10 +227,10 @@ def persona_form_api(request, _id=None):
 
 def persona_delete_api(request, _id):
     RETURN_URL = 'persona_list_api'
-    ENDPOINT = 'http://localhost:8000/api/public/persona/{id}'.format(id=_id)
+    ENDPOINT = '{endpoint}/api/persona/{id}/'.format(endpoint=settings.API_ENDPOINT, id=_id)
     # Se intenta obtener el registro a eliminar
     try:
-        response = requests.get(ENDPOINT.format(id=_id))
+        response = requests.get(ENDPOINT.format(id=_id), cookies=request.COOKIES)
         if response.status_code != 200:
             raise Http404
         instance = response.json()
