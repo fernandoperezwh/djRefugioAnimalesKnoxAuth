@@ -29,7 +29,7 @@ def generic_api_delete(request, endpoint, instance, tpl_name, redirect, custom_m
     DEFAULT_SERVER_CONNECTION_ERROR = 'Un error ha ocurrido intentando conectar con el servidor'
     if request.method == "POST":
         try:
-            response = requests.delete(endpoint)
+            response = requests.delete(endpoint, cookies=request.COOKIES)
         except (ConnectionError, ConnectTimeout) as err:
             messages.error(request, DEFAULT_SERVER_CONNECTION_ERROR)
             return HttpResponseRedirect(redirect)

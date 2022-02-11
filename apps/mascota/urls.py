@@ -40,9 +40,9 @@ urlpatterns = [
     url(r'^mascota/delete/(?P<pk>[0-9]+)/$', views.MascotaDeleteView.as_view(), name="mascota_delete_cbv"),
     #endregion
     #region Mascotas - api views
-    url(r'^mascota/api/list/$', views.mascota_list, name="mascota_list_api"),
-    url(r'^mascota/api/new/$', views.mascota_form, name="mascota_new_api"),
-    url(r'^mascota/api/edit/(\d+)/$', views.mascota_form, name="mascota_edit_api"),
-    url(r'^mascota/api/delete/(\d+)/$', views.mascota_delete, name="mascota_delete_api"),
+    # url(r'^mascota/api/list/$', views.mascota_list, name="mascota_list_api"),
+    # url(r'^mascota/api/new/$', views.mascota_form, name="mascota_new_api"),
+    # url(r'^mascota/api/edit/(\d+)/$', views.mascota_form, name="mascota_edit_api"),
+    # url(r'^mascota/api/delete/(\d+)/$', views.mascota_delete, name="mascota_delete_api"),
     #endregion
 ]

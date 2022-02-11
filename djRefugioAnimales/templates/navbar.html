@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a href="/" class="navbar-brand" href="#">djRefugioMascotas</a>
+    <a href="/" class="navbar-brand" href="#">djRefugioMascotasTokenAuthAPI</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -29,7 +29,7 @@
         </li>
 
 
-
+        {% comment %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'mascota_list_fnc' %}" tabindex="-1" aria-disabled="true">Mascotas</a>
         </li>
@@ -39,6 +39,7 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'mascota_list_api' %}" tabindex="-1" aria-disabled="true">Mascotas API</a>
         </li>
+        {% endcomment %}
       </ul>
     </div>
   </div>

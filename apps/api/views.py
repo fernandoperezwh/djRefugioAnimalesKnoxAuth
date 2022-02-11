@@ -151,7 +151,6 @@ class MascotaDetail(APIView):
 # endregion
 
 
-
 # region protected resources
 class PermissionMixin():
     def get_permissions(self):

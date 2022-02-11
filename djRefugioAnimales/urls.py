@@ -25,9 +25,8 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     # endregion
     # region django rest framework urls
-    url('^token/$', ObtainAuthToken.as_view()),
-    url('^token/verify/$', VerifyAuthToken.as_view()),
-    
+    url('^api/auth/$', ObtainAuthToken.as_view()),
+    url('^api/auth/verify/$', VerifyAuthToken.as_view()),
     # endregion
 
     # region local urls
