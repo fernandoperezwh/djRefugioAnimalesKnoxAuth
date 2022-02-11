@@ -151,38 +151,6 @@ class MascotaDetail(APIView):
 # endregion
 
 
-# region protected resources
-class PermissionMixin():
-    def get_permissions(self):
-        permission_classes = [IsAuthenticated]
-        return [permission() for permission in permission_classes]
-
-
-class PersonaPrivateList(PermissionMixin, PersonaList):
-    pass
-
-
-class VacunaPrivateList(PermissionMixin, VacunaList):
-    pass
-
-
-class MascotaPrivateList(PermissionMixin, MascotaList):
-    pass
-
-
-class PersonaPrivateDetail(PermissionMixin, PersonaDetail):
-    pass
-
-
-class VacunaPrivateDetail(PermissionMixin, VacunaDetail):
-    pass
-
-
-class MascotaPrivateDetail(PermissionMixin, MascotaDetail):
-    pass
-# endregion
-
-
 class ObtainAuthToken(ObtainAuthTokenDRF):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
@@ -196,6 +164,6 @@ class ObtainAuthToken(ObtainAuthTokenDRF):
         })
 
 
-class VerifyAuthToken(PermissionMixin, APIView):
+class VerifyAuthToken(APIView):
     def get(self):
         return Response()

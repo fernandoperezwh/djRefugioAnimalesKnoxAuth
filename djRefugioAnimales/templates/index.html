@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Home djRefugioAnimalesTokenAuthAPI{% endblock %}
+
+{% block content %}
+<div class="col-lg-8 mx-auto p-3 py-md-5">
+    <header class="d-flex align-items-center pb-3 mb-5 border-bottom">
+        <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+            <img width="40" height="32" src="https://cdn.worldvectorlogo.com/logos/django.svg" alt="Django logo vector">
+            <span class="fs-4">djRefugioAnimalesTokenAuthAPI</span>
+        </a>
+    </header>
+
+    <main>
+        <h1>Probando Django REST Framework con TokenAuthentication</h1>
+        <p class="fs-5 col-md-8">
+            Este proyecto prevee una API de Refugio de Animales cuya autentificación se realiza por el <strong>TokenAuthentication</strong>
+            que menciona la
+            <a href="https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication">
+                documentación de Django REST Framework.
+            </a>
+        </p>
+
+        <p class="fs-5 col-md-8">Este proyecto soporta dos tipos de autentificación</p>
+        <ul class="icon-list">
+            <li>Session Authentication</li>
+            <li>Token Authentication</li>
+        </ul>
+
+        <hr class="col-8 col-md-8 mb-8">
+
+        <div class="row g-5">
+            <div class="col-md-6">
+                <h2>Session Authentication</h2>
+                <p>
+                    Las rutas del menu superior se encuentra protegidas y solo puede acceder al recurso si inicia sesión desde el
+                    <a href="{% url 'admin:index' %}">Admin de Django.</a>
+                </p>
+                <p>
+                    Si aún no cuenta con un usuario puede crear uno ejecutando el comando: <code>python manage.py createsuperuser</code>
+                </p>
+            </div>
+
+            <div class="col-md-6">
+                <h2>Token Authentication</h2>
+                <p>
+                    Puede utilizar la API de este proyecto consultando desde un proyecto que representa un cliente externo llamado:
+                    <strong><a href="https://github.com/fernandoperezwh/djRefugioAnimalesClient">djRefugioAnimalesClient</a></strong>.
+                </p>
+                <p>
+                    Para realizar la autentificación, va a requerir del usuario y contraseña de algun usuario del admin de django
+                    para generar un "access_token". O de igual forma puede utilizar directamente este token <code>{{ token }}</code>
+                    que le pertenece al usuario <strong>"{{ username }}"</strong>.
+                </p>
+                <p>
+                    Acuda al archivo README para obtener información más detallada de como configurar el projecto cliente
+                    <strong><a href="https://github.com/fernandoperezwh/djRefugioAnimalesClient/blob/master/README.md">djRefugioAnimalesClient</a></strong>.
+                </p>
+            </div>
+        </div>
+    </main>
+
+
+    <footer class="pt-5 my-5 text-muted border-top"></footer>
+</div>
+
+{% endblock  %}
+

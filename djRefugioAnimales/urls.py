@@ -17,22 +17,23 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 # local packages
+from django.views.generic import TemplateView
+
 from apps.api.views import ObtainAuthToken, VerifyAuthToken
-from apps.mascota.views import MascotaListView
 
 urlpatterns = [
     # region django urls
     url(r'^admin/', include(admin.site.urls)),
     # endregion
     # region django rest framework urls
-    url('^api/auth/$', ObtainAuthToken.as_view()),
-    url('^api/auth/verify/$', VerifyAuthToken.as_view()),
+    url(r'^api/auth/$', ObtainAuthToken.as_view()),
+    url(r'^api/auth/verify/$', VerifyAuthToken.as_view()),
     # endregion
 
     # region local urls
-    url(r'^$', MascotaListView.as_view()),
-    url(r'^adopcion/',include('apps.adopcion.urls')),
-    url(r'^mascota/',include('apps.mascota.urls')),
+    url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
+    url(r'^a/', include('apps.adopcion.urls')),
+    url(r'^m/', include('apps.mascota.urls')),
     url(r'^api/', include('apps.api.urls'))
     # endregion
 ]

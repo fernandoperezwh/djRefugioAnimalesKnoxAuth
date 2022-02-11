@@ -1,12 +1,10 @@
 # django packages
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.messages.views import SuccessMessageMixin
-from django.core.urlresolvers import reverse, reverse_lazy
-from django.db.models import Q
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.core.urlresolvers import reverse
+from django.shortcuts import render
+from django.http import HttpResponseRedirect, Http404
+from django.views.generic import ListView
 # third party packages
 import requests
 from requests import ConnectionError, ConnectTimeout
@@ -15,121 +13,8 @@ from rest_framework import status
 from apps.adopcion.models import Persona
 from apps.adopcion.forms import PersonaForm
 from djRefugioAnimales.forms import SearchForm
-from djRefugioAnimales.utils import generic_delete, generic_api_delete
+from djRefugioAnimales.utils import generic_api_delete
 
-
-# Create your views here.
-def adopcion_index(request):
-    return HttpResponse("Hello world")
-
-
-#region persona - function based views
-def persona_list(request):
-    form, queryset = SearchForm(request.GET), None
-    if form.is_valid():
-        cd = form.cleaned_data
-        if not cd['q']:
-            queryset = Persona.objects.all()
-        else:
-            queryset = Persona.objects.filter(
-                Q(nombre__icontains=cd['q'])    |
-                Q(apellidos__icontains=cd['q'])
-            )
-    return render(request, "adopcion__persona_listado.html", {
-        "buscador": form,
-        "object_list": queryset,
-        'create_url': 'persona_new_fnc',
-        "edit_url": 'persona_edit_fnc',
-        "delete_url": 'persona_delete_fnc',
-    })
-
-
-def persona_form(request, _id=None):
-    # Se verifica la existencia
-    instance = get_object_or_404(Persona, id=_id) if _id else None
-    # Update/create
-    if request.method == "POST":
-        form = PersonaForm(request.POST, instance=instance)
-        if form.is_valid():
-            form.save()
-            messages.success( request,
-                'Se {} correctamente la persona <strong>{} {}</strong>'.format(
-                    "modifico" if instance else "agrego",
-                    instance.nombre if instance else form.cleaned_data.get('nombre'),
-                    instance.apellidos if instance else form.cleaned_data.get('apellidos'),
-                )
-            )
-            return HttpResponseRedirect(reverse('persona_list_fnc'))
-    else:
-        form = PersonaForm(instance=instance) if instance else PersonaForm()
-    return render(request, "adopcion__persona_form.html", { "form": form })
-
-
-def persona_delete(request, _id):
-    instance = get_object_or_404(Persona, id=_id)
-    return generic_delete(
-        request=request,
-        instance=instance,
-        tpl_name="adopcion__persona_delete.html",
-        redirect=reverse('persona_list_fnc'),
-        success_message="Se elimino el registro de: <strong>{} {}</strong>".format(instance.nombre, instance.apellidos)
-    )
-#endregion
-
-
-#region persona - class based views
-class PersonaListView(ListView):
-    model = Persona
-    template_name = "adopcion__persona_listado.html"
-    form_class = SearchForm
-
-    def get_queryset(self):
-        form = self.form_class(self.request.GET)
-        if form.is_valid():
-            cd = form.cleaned_data
-            return self.model.objects.filter(Q(nombre__icontains=cd['q']) | Q(apellidos__icontains=cd['q']))
-        return self.model.objects.all()
-
-    def get_context_data(self, **kwargs):
-        context = super(PersonaListView, self).get_context_data(**kwargs)
-        context['buscador'] = self.form_class()
-        context['create_url'] = 'persona_new_cbv'
-        context['edit_url'] = 'persona_edit_cbv'
-        context['delete_url'] = 'persona_delete_cbv'
-        return context
-
-
-class PersonaCreateView(SuccessMessageMixin, CreateView):
-    model = Persona
-    form_class = PersonaForm
-    template_name = "adopcion__persona_form.html"
-    success_url = reverse_lazy("persona_list_cbv")
-    success_message = "Se agrego correctamente la persona <strong>%(nombre)s %(apellidos)s</strong>"
-
-
-class PersonaUpdateView(SuccessMessageMixin, UpdateView):
-    model = Persona
-    form_class = PersonaForm
-    template_name = "adopcion__persona_form.html"
-    success_url = reverse_lazy("persona_list_cbv")
-    success_message = "Se modifico correctamente la persona <strong>%(nombre)s %(apellidos)s</strong>"
-
-
-class PersonaDeleteView(SuccessMessageMixin, DeleteView):
-    model = Persona
-    form_class = PersonaForm
-    template_name = "adopcion__persona_delete.html"
-    success_url = reverse_lazy("persona_list_cbv")
-    success_message = "Se elimino correctamente la persona <strong>%(nombre)s %(apellidos)s</strong>"
-
-    def delete(self, request, *args, **kwargs):
-        obj = self.get_object()
-        messages.success(self.request, self.success_message % obj.__dict__)
-        return super(PersonaDeleteView, self).delete(request, *args, **kwargs)
-#endregion
-
-
-# region persona - API Clase based views
 class PersonaApiListView(ListView):
     endpoint = '{endpoint}/api/persona/'.format(endpoint=settings.API_ENDPOINT)
     model = Persona
@@ -166,6 +51,10 @@ class PersonaApiListView(ListView):
             pass
         return data
 
+    def get(self, *args, **kwargs):
+        if not self.get_queryset():
+            return HttpResponseRedirect(reverse('home'))
+        return super(PersonaApiListView, self).get(*args, **kwargs)
 
 def persona_form_api(request, _id=None):
     RETURN_URL = 'persona_list_api'
@@ -252,4 +141,3 @@ def persona_delete_api(request, _id):
                      ''.format(instance.get('nombre'), instance.get('apellidos')),
         }
     )
-# endregion
