@@ -42,7 +42,7 @@ class PersonaApiListView(ListView):
         return self.endpoint
 
     def get_info_via_api(self, search_query=None):
-        data = []
+        data = None
         try:
             response = requests.get(self.get_endpoint(search_query), cookies=self.request.COOKIES)
             if response.status_code == status.HTTP_200_OK:
@@ -52,7 +52,7 @@ class PersonaApiListView(ListView):
         return data
 
     def get(self, *args, **kwargs):
-        if not self.get_queryset():
+        if self.get_queryset() is None:
             return HttpResponseRedirect(reverse('home'))
         return super(PersonaApiListView, self).get(*args, **kwargs)
 
@@ -116,10 +116,10 @@ def persona_form_api(request, _id=None):
 
 def persona_delete_api(request, _id):
     RETURN_URL = 'persona_list_api'
-    ENDPOINT = '{endpoint}/api/persona/{id}/'.format(endpoint=settings.API_ENDPOINT, id=_id)
+    endpoint = '{endpoint}/api/persona/{id}/'.format(endpoint=settings.API_ENDPOINT, id=_id)
     # Se intenta obtener el registro a eliminar
     try:
-        response = requests.get(ENDPOINT.format(id=_id), cookies=request.COOKIES)
+        response = requests.get(endpoint, cookies=request.COOKIES)
         if response.status_code != 200:
             raise Http404
         instance = response.json()
@@ -130,7 +130,7 @@ def persona_delete_api(request, _id):
     # Se manda a llamar las instrucciones genericas para eliminar en base al funcionamiento del api
     return generic_api_delete(
         request=request,
-        endpoint=ENDPOINT,
+        endpoint=endpoint,
         instance=instance,
         tpl_name="adopcion__persona_delete.html",
         redirect=reverse(RETURN_URL),
