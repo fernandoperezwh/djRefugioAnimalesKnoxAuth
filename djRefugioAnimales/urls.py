@@ -19,7 +19,7 @@ from django.contrib import admin
 # local packages
 from django.views.generic import TemplateView
 
-from apps.api.views import ObtainAuthToken, VerifyAuthToken
+from apps.api.views import home, ObtainAuthToken, VerifyAuthToken
 
 urlpatterns = [
     # region django urls
@@ -31,7 +31,7 @@ urlpatterns = [
     # endregion
 
     # region local urls
-    url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
+    url(r'^$', home, name='home'),
     url(r'^a/', include('apps.adopcion.urls')),
     url(r'^m/', include('apps.mascota.urls')),
     url(r'^api/', include('apps.api.urls'))
