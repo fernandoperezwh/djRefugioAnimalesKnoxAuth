@@ -1,11 +1,12 @@
 # django packages
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import Http404
+from django.shortcuts import render
 # django rest framework packages
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken as ObtainAuthTokenDRF
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 # local packages
@@ -14,6 +15,16 @@ from apps.mascota.models import Vacuna, Mascota
 from apps.adopcion.serializers import PersonaSerializer
 from apps.mascota.serializers import VacunaSerializer, MascotaSerializer, EditMascotaSerializer
 
+
+def home(request):
+    access_token = None
+    if request.method == 'POST':
+        token_instance, _ = Token.objects.get_or_create(user=request.user)
+        access_token = token_instance.key
+
+    return render(request, 'index.html', {
+        'user_access_token': access_token,
+    })
 
 
 # region Persona views
@@ -151,38 +162,6 @@ class MascotaDetail(APIView):
 # endregion
 
 
-# region protected resources
-class PermissionMixin():
-    def get_permissions(self):
-        permission_classes = [IsAuthenticated]
-        return [permission() for permission in permission_classes]
-
-
-class PersonaPrivateList(PermissionMixin, PersonaList):
-    pass
-
-
-class VacunaPrivateList(PermissionMixin, VacunaList):
-    pass
-
-
-class MascotaPrivateList(PermissionMixin, MascotaList):
-    pass
-
-
-class PersonaPrivateDetail(PermissionMixin, PersonaDetail):
-    pass
-
-
-class VacunaPrivateDetail(PermissionMixin, VacunaDetail):
-    pass
-
-
-class MascotaPrivateDetail(PermissionMixin, MascotaDetail):
-    pass
-# endregion
-
-
 class ObtainAuthToken(ObtainAuthTokenDRF):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
@@ -196,6 +175,6 @@ class ObtainAuthToken(ObtainAuthTokenDRF):
         })
 
 
-class VerifyAuthToken(PermissionMixin, APIView):
+class VerifyAuthToken(APIView):
     def get(self):
         return Response()

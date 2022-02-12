@@ -1,8 +1,7 @@
 # DRF packages
 from rest_framework import serializers
-# Local packages - Models
 from rest_framework.exceptions import ValidationError
-
+# Local packages - Models
 from apps.adopcion.models import Persona
 from apps.mascota.models import Mascota, Vacuna
 # local packages - serializers
