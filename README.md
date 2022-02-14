@@ -12,7 +12,7 @@ Este proyecto soporta dos tipos de autentificación
   
 
 ## Indice
- - ###[Manual de instalación](./docs/instalation.md)
+ - ### [Manual de instalación](./docs/instalation.md)
  - ### [Manual de uso](./docs/usage.md)
    - #### [Session Authentication](./docs/usage.md#session-authentication)
    - #### [Token Authentication](./docs/usage.md#token-authentication)
