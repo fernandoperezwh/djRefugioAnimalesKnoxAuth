@@ -1,6 +1,6 @@
 # djRefugioAnimalesTokenAuthAPI
 
-Proyecto elaborado con Django 1.11 y python 2.7.
+Proyecto elaborado en python 2.7 con Django 1.11 y Django REST Framework 3.6.4 
 
 ---
 ## Descripción

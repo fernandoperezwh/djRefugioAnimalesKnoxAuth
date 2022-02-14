@@ -18,7 +18,7 @@
     ```bash
     workon djRefugioAnimalesTokenAuthAPI
     ```
-- Instalar las dependencias del archivo `requirements.txt` 
+- Instalar las dependencias del proyecto que se encuentran en el archivo `requirements.txt` 
     ```bash
     pip install -r requirements.txt
     ```
