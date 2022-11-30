@@ -26,8 +26,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     # endregion
     # region django rest framework urls
-    url(r'^api/auth/$', ObtainAuthToken.as_view()),
-    url(r'^api/auth/verify/$', VerifyAuthToken.as_view()),
+    url(r'api/auth/', include('knox.urls')),
     # endregion
 
     # region local urls

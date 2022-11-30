@@ -42,6 +42,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
+    'knox',
 ]
 LOCAL_APPS = [
     'apps.adopcion',
@@ -141,11 +142,21 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',  # Debe estar habilitado para poder obtener un token
+        'knox.auth.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ]
 }
+
+REST_KNOX = {
+  'TOKEN_TTL': timedelta(minutes=15),
+  
+  # XXX: Esta confiugración no existe en esta versión
+  # 'TOKEN_LIMIT_PER_USER': 3,
+  # 'AUTO_REFRESH': True,
+}
+
+
 API_ENDPOINT = 'http://127.0.0.1:8010'
